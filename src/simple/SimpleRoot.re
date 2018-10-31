@@ -1,1 +1,6 @@
-ReactDOMRe.renderToElementWithId(<Page message="Hello!" />, "index");
+ReactDOMRe.renderToElementWithId(
+  <ReasonApollo.Provider client=Client.instance>
+    <Page />
+  </ReasonApollo.Provider>,
+  "index",
+);

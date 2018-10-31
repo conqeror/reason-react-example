@@ -6,7 +6,8 @@
   "bs-dependencies": [
     "reason-react",
     "bs-fetch",
-    "@glennsl/bs-json"
+    "@glennsl/bs-json",
+    "reason-apollo"
   ],
   "sources": [
     {
@@ -19,5 +20,8 @@
     "in-source": true
   },
   "suffix": ".bs.js",
-  "refmt": 3
+  "refmt": 3,
+  "ppx-flags": [
+    "graphql_ppx/ppx"
+  ]
 }
