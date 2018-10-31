@@ -37,13 +37,17 @@ module GetPodcasts = [%graphql
 
 module GetPodcastsQuery = ReasonApollo.CreateQuery(GetPodcasts);
 
+type state = {selectedId: int};
+
+type action =
+  | Select(int);
+
 /* This is the basic component. */
-let component = ReasonReact.statelessComponent("Page");
+let component = ReasonReact.reducerComponent("Page");
 
 /* This is your familiar handleClick from ReactJS. This mandatorily takes the payload,
    then the `self` record, which contains state (none here), `handle`, `send`
    and other utilities */
-let handleClick = (_event, _self) => Js.log("clicked!");
 
 /* `make` is the function that mandatorily takes `children` (if you want to use
    `JSX). `message` is a named argument, which simulates ReactJS props. Usage:
@@ -55,7 +59,15 @@ let handleClick = (_event, _self) => Js.log("clicked!");
    `ReasonReact.element (Page.make message::"hello" [||])` */
 let make = _children => {
   ...component,
-  render: _self =>
+
+  initialState: () => {selectedId: (-1)},
+
+  reducer: (action, _state) =>
+    switch (action) {
+    | Select(id) => ReasonReact.Update({selectedId: id})
+    },
+
+  render: self =>
     <GetPodcastsQuery>
       ...{
            ({result}) =>
@@ -83,7 +95,13 @@ let make = _children => {
                  <div>
                    ...{
                         Array.mapi(
-                          (i, item) => <Podcast id=i podcast=item />,
+                          (i, item) =>
+                            <Podcast
+                              id=i
+                              selectedId={self.state.selectedId}
+                              handleClick={_event => self.send(Select(i))}
+                              podcast=item
+                            />,
                           response##rss##rss2Feed##items,
                         )
                       }

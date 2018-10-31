@@ -1,6 +1,7 @@
 'use strict';
 
 var $$Array = require("bs-platform/lib/js/array.js");
+var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Js_exn = require("bs-platform/lib/js/js_exn.js");
@@ -365,12 +366,7 @@ var GetPodcastsQuery = ReasonApollo.CreateQuery([
       parse
     ]);
 
-var component = ReasonReact.statelessComponent("Page");
-
-function handleClick(_, _$1) {
-  console.log("clicked!");
-  return /* () */0;
-}
+var component = ReasonReact.reducerComponent("Page");
 
 function make$1() {
   return /* record */[
@@ -383,7 +379,7 @@ function make$1() {
           /* willUnmount */component[/* willUnmount */6],
           /* willUpdate */component[/* willUpdate */7],
           /* shouldUpdate */component[/* shouldUpdate */8],
-          /* render */(function () {
+          /* render */(function (self) {
               return ReasonReact.element(undefined, undefined, Curry.app(GetPodcastsQuery[/* make */3], [
                               undefined,
                               undefined,
@@ -413,7 +409,9 @@ function make$1() {
                                       tmp = React.createElement("div", undefined);
                                     }
                                     return React.createElement("div", undefined, React.createElement("h2", undefined, response.rss.rss2Feed.title), tmp, React.createElement("hr", undefined), ReactDOMRe.createElementVariadic("div", undefined, $$Array.mapi((function (i, item) {
-                                                          return ReasonReact.element(undefined, undefined, Podcast$ReasonReactExample.make(i, item, /* array */[]));
+                                                          return ReasonReact.element(undefined, undefined, Podcast$ReasonReactExample.make(i, item, (function () {
+                                                                            return Curry._1(self[/* send */3], /* Select */[i]);
+                                                                          }), self[/* state */1][/* selectedId */0], /* array */[]));
                                                         }), response.rss.rss2Feed.items)));
                                   } else {
                                     return React.createElement("div", undefined, result[0].message);
@@ -421,9 +419,13 @@ function make$1() {
                                 })
                             ]));
             }),
-          /* initialState */component[/* initialState */10],
+          /* initialState */(function () {
+              return /* record */[/* selectedId */-1];
+            }),
           /* retainedProps */component[/* retainedProps */11],
-          /* reducer */component[/* reducer */12],
+          /* reducer */(function (action, _) {
+              return /* Update */Block.__(0, [/* record */[/* selectedId */action[0]]]);
+            }),
           /* jsElementWrapped */component[/* jsElementWrapped */13]
         ];
 }
@@ -431,6 +433,5 @@ function make$1() {
 exports.GetPodcasts = GetPodcasts;
 exports.GetPodcastsQuery = GetPodcastsQuery;
 exports.component = component;
-exports.handleClick = handleClick;
 exports.make = make$1;
 /* GetPodcastsQuery Not a pure module */
